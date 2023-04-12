@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/compat/app"
 import 'firebase/compat/firestore';
+import {  collection, getDocs, onSnapshot } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,5 +23,19 @@ firebase.initializeApp(firebaseConfig);
 // firebase의 firestore 인스턴스를 변수에 저장
 const db = firebase.firestore();
 // 필요한 곳에서 사용할 수 있도록 내보내기
-export { db };
+export async function getData(){
+  await getDocs(collection(db,'contacts'))
+    .then((querySnapshot) => {
+      const contactData = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+      return contactData;
+  });
+}
 
+// export async function getData(){
+//   return get(ref(db, 'contacts')).then(snapshot => {
+//     if(snapshot.exits()){
+//       return Object.values(snapshot.val());
+//     }
+//     return [];
+//   })
+// }
