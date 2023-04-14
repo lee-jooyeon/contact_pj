@@ -4,6 +4,7 @@ import Contact from './components/pages/Contact';
 import Detail from './components/pages/Detail';
 import ErrorPage from './components/pages/ErrorPage';
 import Home from './components/pages/Home';
+import NewContact from './components/pages/NewContact';
 import Root from './components/pages/Root';
 
 const router = createBrowserRouter([
@@ -13,16 +14,21 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        path: '/',
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/contacts',
+        element: <Contact />,
       },
       {
         path: '/contacts/:contactId',
         element: <Detail />,
       },
       {
-        path: '/contacts',
-        element: <Contact />,
+        path: '/newcontact',
+        element: <NewContact />,
       },
     ],
   },

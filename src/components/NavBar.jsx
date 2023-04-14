@@ -17,7 +17,7 @@ export default function NavBar() {
       <div className='leading-8 font-medium text-white self-center'>
         Contacts
       </div>
-      <span className='self-center'>
+      <span className='self-center' onClick={() => navigate('/newcontact')}>
         <MdAdd className='text-white w-8 h-8' />
       </span>
     </nav>
