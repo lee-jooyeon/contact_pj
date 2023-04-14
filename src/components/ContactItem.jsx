@@ -12,7 +12,7 @@ export default function ContactItem({data}){
     <span className="pl-4 self-center text-white text-sm flex-1 mb-5">
       {number}
     </span>
-    <div className={`${group === 'Family' ? 'bg-[#59d58a]' : group === 'Friends' ? 'bg-[#65a0d7]' : 'bg-[#d587dd]'} 
+    <div className={`${group === 'family' ? 'bg-[#59d58a]' : group === 'friends' ? 'bg-[#65a0d7]' : 'bg-[#d587dd]'} 
       mr-2.5 absolute self-center left-14 top-11 w-14 text-[10px] text-center text-white uppercase leading-4 rounded-full`}>
       {group}
     </div>
