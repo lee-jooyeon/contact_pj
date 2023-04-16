@@ -1,10 +1,18 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 export default function Detail() {
   const {
-    state: { data },
+    state: {
+      list: { name, group, number, imgUrl },
+    },
   } = useLocation();
-  const {name, group, number, url} = data;
-  console.log(name);
-  return <div className='text-xl'>{name}</div>;
+
+  return (
+    <section>
+      <div className='text-xl'>{name}</div>
+      <div className='img_box'>
+        <img src={imgUrl} alt='img' />
+      </div>
+    </section>
+  );
 }

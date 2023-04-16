@@ -1,19 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import { getLists } from "../api/firebase";
-import ContactItem from "../ContactItem";
-import ErrorPage from "./ErrorPage";
+import { useQuery } from '@tanstack/react-query';
+import { getLists } from '../api/firebase';
+import ContactItem from '../ContactItem';
+import ErrorPage from './ErrorPage';
 
-export default function Contact(){
+export default function Contact() {
   const { isLoading, error, data: lists } = useQuery(['lists'], getLists);
 
-  console.log(lists && lists)
+  console.log(lists && lists);
 
-  if(isLoading) return 'loading...'
-  if(error) return <ErrorPage />
+  if (isLoading) return 'loading...';
+  if (error) return <ErrorPage />;
 
-  return(
+  return (
     <ul>
-      {lists?.map((data) => <ContactItem key={data.id} data={data} />)}
+      {lists && lists.map(list => <ContactItem key={list.id} list={list} />)}
     </ul>
-  )
+  );
 }
