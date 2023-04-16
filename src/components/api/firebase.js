@@ -1,5 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get } from "firebase/database";
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, get, set } from 'firebase/database';
+
+import { v4 as uuidv4 } from 'uuid';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -9,21 +11,30 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDERID,
   appId: process.env.REACT_APP_APPID,
   measurementId: process.env.REACT_APP_MEASUREMENTID,
-  databaseURL: process.env.REACT_APP_DATABASEURL
+  databaseURL: process.env.REACT_APP_DATABASEURL,
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-export async function getLists(){
+export async function getLists() {
   return get(ref(database, 'lists')).then(snapshot => {
-    if(snapshot.exists()){
-      return snapshot.val();
+    if (snapshot.exists()) {
+      return Object.values(snapshot.val());
     }
     return [];
-  })
+  });
 }
 
-
-
+export async function addLists(contact, imgUrl) {
+  const id = uuidv4();
+  set(ref(database, `lists/${id}`), {
+    ...contact,
+    id,
+    group: contact.group,
+    name: contact.name,
+    number: contact.number,
+    imgUrl,
+  });
+}
