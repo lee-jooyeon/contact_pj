@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { getDatabase, ref, get, set, remove } from 'firebase/database';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -37,4 +37,8 @@ export async function addLists(contact, imgUrl) {
     number: contact.number,
     imgUrl,
   });
+}
+
+export async function deleteList(id) {
+  remove(ref(database, `lists/${id}`));
 }
