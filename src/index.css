@@ -186,7 +186,7 @@ textarea:focus {
   outline: none;
 }
 input::placeholder {
-  color: #ffb43a;
+  color: #ffffff;
 }
 [type = "text"] {
   border: none;
@@ -196,6 +196,10 @@ input::placeholder {
   cursor: pointer;
   text-indent: 12px;
   font-size: 16px;
+}
+input[type="file"] {
+  appearance: none;
+  border: none;
 }
 button {
   background: none;
@@ -223,3 +227,11 @@ button {
   }
 }
 
+/* Detail */
+.contact_icon {@apply mx-auto mb-2 w-12 h-12}
+.bottom_btn {@apply relative flex-1 block py-5 px-3 mx-1 mb-2 bg-[#3f3f52] rounded-lg}
+
+/* New Contact */
+.input_box {
+  @apply mb-6 py-6 px-3 bg-[#3f3f52] appearance-none text-white rounded-lg  
+}

@@ -5,8 +5,8 @@ import { addLists } from '../api/firebase';
 import { uploadImage } from '../api/upload';
 
 export default function NewContact() {
+  const publicUrl = process.env.PUBLIC_URL;
   const [contact, setContact] = useState({});
-
   const [file, setFile] = useState();
 
   const onSubmitHandler = e => {
@@ -29,12 +29,12 @@ export default function NewContact() {
   };
 
   return (
-    <section>
-      {file && <img src={URL.createObjectURL(file)} alt='local image' />}
-      <form>
+    <section className='mt-5'>
+      {file && file ? <img src={URL.createObjectURL(file)} alt='local image' className='mx-auto w-36 h-36 object-cover' /> : <img src={`${publicUrl}/images/lists/user.png`} alt='contact-img' className='mx-auto w-32 h-32 object-cover rounded-full' />}
+      <form className='flex flex-col mt-7 mx-3'>
         <input
           type='text'
-          placeholder='Select your group only for family, friends or work'
+          placeholder='family, friends or work'
           className='input_box'
           name='group'
           required
@@ -43,7 +43,7 @@ export default function NewContact() {
         />
         <input
           type='text'
-          placeholder='name'
+          placeholder='Name'
           className='input_box'
           name='name'
           required
@@ -52,7 +52,7 @@ export default function NewContact() {
         />
         <input
           type='text'
-          placeholder='number'
+          placeholder='Number'
           className='input_box'
           name='number'
           required
@@ -67,8 +67,8 @@ export default function NewContact() {
           name='file'
           onChange={onChangeHandler}
         />
+        <button className='mb-6 py-6 px-3 bg-[#3f3f52] text-[#90ffa1] rounded-lg' onClick={onSubmitHandler}>Add new contact!</button>
       </form>
-      <button onClick={onSubmitHandler}>Add new contact!</button>
     </section>
   );
 }
