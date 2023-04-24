@@ -46,7 +46,7 @@ export async function updateList(id, list, imgUrl) {
     group: list.group,
     name: list.name,
     number: list.number,
-    imgUrl,
+    imgUrl: imgUrl || list.imgUrl,
   });
 }
 

@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { deleteList } from '../api/firebase';
@@ -5,19 +6,21 @@ import { updateList } from '../api/firebase';
 import { uploadImage } from '../api/upload';
 
 export default function Detail() {
+  const publicUrl = process.env.PUBLIC_URL;
   const {
-    state: { list },
+    state: {
+      list: { id, group, name, number, imgUrl },
+    },
   } = useLocation();
-
-  const { id, group, name, number, imgUrl } = list;
   const [file, setFile] = useState();
   const [edit, setEdit] = useState(false);
   const [newText, setNewText] = useState({
     group,
     name,
     number,
+    imgUrl,
   });
-  const publicUrl = process.env.PUBLIC_URL;
+  console.log(newText);
 
   const onChangeText = e => {
     const { name, value, files } = e.target;
@@ -31,14 +34,23 @@ export default function Detail() {
         [name]: value,
       });
     }
-    console.log(newText);
   };
 
   const onSubmitText = e => {
     e.preventDefault();
-    uploadImage(file).then(url => {
-      updateList(id, newText, url);
-    });
+    try {
+      if (file) {
+        uploadImage(file).then(url => {
+          updateList(id, newText, url);
+        });
+      } else {
+        updateList(id, newText);
+      }
+      alert('Updated a contact!');
+      setEdit(!edit);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onEditSubmit = () => {
@@ -110,14 +122,26 @@ export default function Detail() {
       ) : (
         <div>
           <div className='text-center mb-10'>
-            <img
-              src={imgUrl}
-              alt='img'
-              className='mx-auto object-cover w-72 h-72'
-            />
+            {file && file ? (
+              <div className='text-center mb-10'>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt='local image'
+                  className='mx-auto w-48 h-48 object-contain'
+                />
+              </div>
+            ) : (
+              <div className='text-center mb-10'>
+                <img
+                  src={imgUrl}
+                  alt='img'
+                  className='mx-auto mb-5 object-contain w-64 h-64'
+                />
+              </div>
+            )}
           </div>
           <div className='mb-10 text-white text-center text-xl'>
-            {name}
+            {newText.name}
             <span
               className={`${
                 group === 'family'
@@ -128,7 +152,7 @@ export default function Detail() {
               }
               ml-3 px-2 inline-block text-[10px] text-white uppercase leading-4 rounded-full`}
             >
-              {group}
+              {newText.group}
             </span>
           </div>
           <div className='flex justify-around text-center mb-12 text-white'>
@@ -159,7 +183,7 @@ export default function Detail() {
           </div>
           <div className='py-5 px-3 mx-3 mb-2 text-white bg-[#3f3f52] rounded-lg'>
             Number
-            <span className='pl-6'>{number}</span>
+            <span className='pl-6'>{newText.number}</span>
           </div>
         </div>
       )}
@@ -167,7 +191,7 @@ export default function Detail() {
       {edit ? (
         <button
           onClick={onSubmitText}
-          className='py-5 px-36 mx-3 mb-2 bg-[#3f3f52] rounded-lg text-[#278deb]'
+          className='py-5 px-3 mx-3 mb-2 w-[360px] bg-[#3f3f52] rounded-lg text-[#278deb]'
         >
           Update!
         </button>

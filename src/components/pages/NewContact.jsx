@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { addLists } from '../api/firebase';
 
@@ -11,9 +10,12 @@ export default function NewContact() {
 
   const onSubmitHandler = e => {
     e.preventDefault();
-    uploadImage(file).then(url => {
-      addLists(contact, url);
-    });
+    uploadImage(file)
+      .then(url => {
+        addLists(contact, url);
+      })
+      .then(alert('Added new contact!'))
+      .catch(error => console.log(error));
   };
 
   const onChangeHandler = e => {
@@ -30,7 +32,19 @@ export default function NewContact() {
 
   return (
     <section className='mt-5'>
-      {file && file ? <img src={URL.createObjectURL(file)} alt='local image' className='mx-auto w-36 h-36 object-cover' /> : <img src={`${publicUrl}/images/lists/user.png`} alt='contact-img' className='mx-auto w-32 h-32 object-cover rounded-full' />}
+      {file && file ? (
+        <img
+          src={URL.createObjectURL(file)}
+          alt='local image'
+          className='mx-auto w-36 h-36 object-cover'
+        />
+      ) : (
+        <img
+          src={`${publicUrl}/images/lists/user.png`}
+          alt='contact-img'
+          className='mx-auto w-32 h-32 object-cover rounded-full'
+        />
+      )}
       <form className='flex flex-col mt-7 mx-3'>
         <input
           type='text'
@@ -67,7 +81,12 @@ export default function NewContact() {
           name='file'
           onChange={onChangeHandler}
         />
-        <button className='mb-6 py-6 px-3 bg-[#3f3f52] text-[#90ffa1] rounded-lg' onClick={onSubmitHandler}>Add new contact!</button>
+        <button
+          className='mb-6 py-6 px-3 bg-[#3f3f52] text-[#90ffa1] rounded-lg'
+          onClick={onSubmitHandler}
+        >
+          Add new contact!
+        </button>
       </form>
     </section>
   );
