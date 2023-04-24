@@ -39,17 +39,16 @@ export async function addLists(contact, imgUrl) {
   });
 }
 
-export async function updateList(contact, imgUrl) {
-  update(ref(database, `lists/${contact.id}`), {
-    ...contact,
-    id: contact.id,
-    group: contact.group,
-    name: contact.name,
-    number: contact.number,
+export async function updateList(id, list, imgUrl) {
+  update(ref(database, `lists/${id}`), {
+    ...list,
+    id,
+    group: list.group,
+    name: list.name,
+    number: list.number,
     imgUrl,
   });
 }
-
 
 export async function deleteList(id) {
   remove(ref(database, `lists/${id}`));

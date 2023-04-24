@@ -5,13 +5,19 @@ import { updateList } from '../api/firebase';
 import { uploadImage } from '../api/upload';
 
 export default function Detail() {
-  const publicUrl = process.env.PUBLIC_URL;
-  const { state: { list } } = useLocation();
+  const {
+    state: { list },
+  } = useLocation();
 
   const { id, group, name, number, imgUrl } = list;
   const [file, setFile] = useState();
   const [edit, setEdit] = useState(false);
-  const [newText, setNewText] = useState({});
+  const [newText, setNewText] = useState({
+    group,
+    name,
+    number,
+  });
+  const publicUrl = process.env.PUBLIC_URL;
 
   const onChangeText = e => {
     const { name, value, files } = e.target;
@@ -31,7 +37,7 @@ export default function Detail() {
   const onSubmitText = e => {
     e.preventDefault();
     uploadImage(file).then(url => {
-      updateList(list, url);
+      updateList(id, newText, url);
     });
   };
 
@@ -48,8 +54,24 @@ export default function Detail() {
   return (
     <section>
       {edit ? (
-         <form className='flex flex-col mt-7 mx-3'>
-           {file && file ? <img src={URL.createObjectURL(file)} alt='local image' className='mx-auto w-36 h-36 object-cover' /> : <img src={imgUrl} alt='img' className='mx-auto mb-5 object-cover w-64 h-64' />}
+        <form className='flex flex-col mt-7 mx-3'>
+          {file && file ? (
+            <div className='text-center mb-10'>
+              <img
+                src={URL.createObjectURL(file)}
+                alt='local image'
+                className='mx-auto w-48 h-48 object-contain'
+              />
+            </div>
+          ) : (
+            <div className='text-center mb-10'>
+              <img
+                src={imgUrl}
+                alt='img'
+                className='mx-auto mb-5 object-contain w-64 h-64'
+              />
+            </div>
+          )}
           <input
             type='text'
             className='input_box'
@@ -80,68 +102,88 @@ export default function Detail() {
           <input
             type='file'
             accept='image/*'
-            required
             className='input_box'
             name='file'
             onChange={onChangeText}
           />
-       </form>
+        </form>
       ) : (
         <div>
           <div className='text-center mb-10'>
-            <img src={imgUrl} alt='img' className='mx-auto object-cover w-72 h-72' />
+            <img
+              src={imgUrl}
+              alt='img'
+              className='mx-auto object-cover w-72 h-72'
+            />
           </div>
           <div className='mb-10 text-white text-center text-xl'>
             {name}
-            <span className={`${group === 'family' ? 'bg-[#59d58a]' : group === 'friends' ? 'bg-[#65a0d7]' : 'bg-[#d587dd]'}
-              ml-3 px-2 inline-block text-[10px] text-white uppercase leading-4 rounded-full`}>
+            <span
+              className={`${
+                group === 'family'
+                  ? 'bg-[#59d58a]'
+                  : group === 'friends'
+                  ? 'bg-[#65a0d7]'
+                  : 'bg-[#d587dd]'
+              }
+              ml-3 px-2 inline-block text-[10px] text-white uppercase leading-4 rounded-full`}
+            >
               {group}
-            </span>  
+            </span>
           </div>
           <div className='flex justify-around text-center mb-12 text-white'>
             <span className='mt-2.5 text-white'>
               <img
                 className='contact_icon'
                 src={`${publicUrl}/images/message.png`}
-                alt="img"
-              />
-                Message
-            </span>
-            <span className='mt-2.5 text-white'>
-              <img
-                className="contact_icon"
-                src={`${publicUrl}/images/call.png`}
-                alt="img"
+                alt='img'
               />
               Message
             </span>
             <span className='mt-2.5 text-white'>
               <img
-                className="contact_icon"
+                className='contact_icon'
+                src={`${publicUrl}/images/call.png`}
+                alt='img'
+              />
+              Message
+            </span>
+            <span className='mt-2.5 text-white'>
+              <img
+                className='contact_icon'
                 src={`${publicUrl}/images/facetime.png`}
-                alt="img"
+                alt='img'
               />
               Message
             </span>
           </div>
-          <div className='py-5 px-3 mx-3 mb-2 text-white bg-[#3f3f52] rounded-lg'>Number 
+          <div className='py-5 px-3 mx-3 mb-2 text-white bg-[#3f3f52] rounded-lg'>
+            Number
             <span className='pl-6'>{number}</span>
           </div>
         </div>
-        )
-      }
-      
+      )}
+
       {edit ? (
-        <button onClick={onSubmitText} className='text-white'>
-          Update a contact!
+        <button
+          onClick={onSubmitText}
+          className='py-5 px-36 mx-3 mb-2 bg-[#3f3f52] rounded-lg text-[#278deb]'
+        >
+          Update!
         </button>
       ) : (
         <div className='flex justify-between mx-2'>
-          <button className='bottom_btn text-[#E94141]' onClick={onDeleteHandler}>Delete</button>
-          <button className='bottom_btn text-[#278deb]' onClick={onEditSubmit}>Edit</button>
+          <button
+            className='bottom_btn text-[#E94141]'
+            onClick={onDeleteHandler}
+          >
+            Delete
+          </button>
+          <button className='bottom_btn text-[#278deb]' onClick={onEditSubmit}>
+            Edit
+          </button>
         </div>
-      )
-    }
+      )}
     </section>
   );
 }
