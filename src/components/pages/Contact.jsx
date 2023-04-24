@@ -9,8 +9,7 @@ export default function Contact() {
     error,
     data: lists,
   } = useQuery(['lists'], getLists, {
-    refetchOnMount: false,
-    staleTime: 1000 * 60 * 2,
+    refetchOnMount: true,
   }); //useQuery 첫번째 인자로 캐시를 위한 키를 전달 ['lists']
 
   console.log(lists && lists);
