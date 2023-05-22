@@ -9,7 +9,7 @@ export default function Home() {
   };
 
   return (
-    <div className=' mt-8 mx-4 pb-4 border-b border-[#eeeeee] text-center'>
+    <div className='mt-40 mx-4 pb-4 border-b border-[#eeeeee] text-center mt-'>
       <img
         src={`${publicUrl}/images/emoji_.png`}
         alt='image'

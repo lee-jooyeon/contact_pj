@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { deleteList } from '../api/firebase';
