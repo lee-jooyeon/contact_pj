@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { deleteList } from '../api/firebase';
-import { updateList } from '../api/firebase';
-import { uploadImage } from '../api/upload';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { uploadImage } from '../../api/upload';
+import useContact from '../../hooks/useContact';
+import { updateList } from '../../api/firebase';
 
 export default function Detail() {
   const publicUrl = process.env.PUBLIC_URL;
-  const {
-    state: {
+  const navigate = useNavigate();
+  const {state: {
       list: { id, group, name, number, imgUrl },
     },
   } = useLocation();
@@ -19,7 +19,7 @@ export default function Detail() {
     number,
     imgUrl,
   });
-  console.log(newText);
+  const { updateContact, removeContact } = useContact();
 
   const onChangeText = e => {
     const { name, value, files } = e.target;
@@ -40,13 +40,14 @@ export default function Detail() {
     try {
       if (file) {
         uploadImage(file).then(url => {
-          updateList(id, newText, url);
+          updateContact.mutate({ id, newText, url});
         });
       } else {
-        updateList(id, newText);
+        updateContact.mutate({ id, newText});
       }
       alert('Updated a contact!');
       setEdit(!edit);
+      navigate('/contacts');
     } catch (error) {
       console.log(error);
     }
@@ -58,8 +59,9 @@ export default function Detail() {
 
   const onDeleteHandler = () => {
     if (window.confirm('Do you really want to delete it?')) {
-      deleteList(id);
+      removeContact.mutate(id);
     }
+    navigate('/contacts');
   };
 
   return (
@@ -88,7 +90,6 @@ export default function Detail() {
             className='input_box'
             name='group'
             placeholder='family, friends or work'
-            required
             value={newText.group ?? ''}
             onChange={onChangeText}
           />
@@ -97,7 +98,6 @@ export default function Detail() {
             placeholder='name'
             className='input_box'
             name='name'
-            required
             value={newText.name ?? ''}
             onChange={onChangeText}
           />
@@ -106,7 +106,6 @@ export default function Detail() {
             placeholder='number'
             className='input_box'
             name='number'
-            required
             value={newText.number ?? ''}
             onChange={onChangeText}
           />
@@ -169,7 +168,7 @@ export default function Detail() {
                 src={`${publicUrl}/images/call.png`}
                 alt='img'
               />
-              Message
+              Call
             </span>
             <span className='mt-2.5 text-white'>
               <img
@@ -177,7 +176,7 @@ export default function Detail() {
                 src={`${publicUrl}/images/facetime.png`}
                 alt='img'
               />
-              Message
+              FaceTime
             </span>
           </div>
           <div className='py-5 px-3 mx-3 mb-2 text-white bg-[#3f3f52] rounded-lg'>

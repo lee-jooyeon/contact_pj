@@ -1,22 +1,16 @@
 import { useState } from 'react';
-import { addLists } from '../api/firebase';
-
-import { uploadImage } from '../api/upload';
+import { uploadImage } from '../../api/upload';
+import { useNavigate } from 'react-router-dom';
+import useContact from '../../hooks/useContact';
 
 export default function NewContact() {
   const publicUrl = process.env.PUBLIC_URL;
+  const navigate = useNavigate();
   const [contact, setContact] = useState({});
   const [file, setFile] = useState();
-
-  const onSubmitHandler = e => {
-    e.preventDefault();
-    uploadImage(file)
-      .then(url => {
-        addLists(contact, url);
-      })
-      .then(alert('Added new contact!'))
-      .catch(error => console.log(error));
-  };
+  const [isUploading, setIsUploading] = useState(false);
+  const [success, setSuccess] = useState();
+  const { addContact } = useContact();
 
   const onChangeHandler = e => {
     const { name, value, files } = e.target;
@@ -30,8 +24,31 @@ export default function NewContact() {
     }));
   };
 
+  const onSubmitHandler = e => {
+    e.preventDefault();
+    setIsUploading(true);
+    uploadImage(file)
+      .then(url => {
+        addContact.mutate(
+          {contact, url},
+          {
+            onSuccess: () => {
+              setSuccess('Added new contact!');
+              setTimeout(() => {
+                setSuccess(null);
+              }, 300);
+            } 
+          }
+        );
+      })
+      .then(() => setIsUploading(false))
+      .catch(error => console.log(error));
+      navigate('/contacts');
+  };
+
   return (
     <section className='mt-5'>
+      {success && <p className='my-2'>✅ {success}</p>}
       {file && file ? (
         <img
           src={URL.createObjectURL(file)}
@@ -84,6 +101,7 @@ export default function NewContact() {
         <button
           className='mb-6 py-6 px-3 bg-[#3f3f52] text-[#90ffa1] rounded-lg'
           onClick={onSubmitHandler}
+          disabled={isUploading}
         >
           Add new contact!
         </button>

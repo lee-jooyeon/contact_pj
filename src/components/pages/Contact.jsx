@@ -1,18 +1,14 @@
+import React from 'react';
 import Lottie from "react-lottie";
-import { useQuery } from '@tanstack/react-query';
-import { getLists } from '../api/firebase';
 import ContactItem from '../ContactItem';
 import ErrorPage from './ErrorPage';
 import Loading from '../../lottie/loading.json';
+import useContact from "../../hooks/useContact";
 
 export default function Contact() {
   const {
-    isLoading,
-    error,
-    data: lists,
-  } = useQuery(['lists'], getLists, {
-    refetchOnMount: true,
-  }); //useQuery 첫번째 인자로 캐시를 위한 키를 전달 ['lists']
+    contactQuery: { isLoading, error, data: lists },
+  } = useContact();
 
   console.log(lists && lists);
 
