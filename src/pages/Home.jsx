@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
@@ -9,15 +10,15 @@ export default function Home() {
   };
 
   return (
-    <div className='mt-40 mx-4 pb-4 border-b border-[#eeeeee] text-center mt-'>
+    <div className='mt-40 mx-4 pb-4 text-center mt-'>
       <img
         src={`${publicUrl}/images/emoji_.png`}
         alt='image'
-        className='w-24- h-32 mx-auto my-0'
+        className='w-24- h-40 mx-auto my-0'
       />
-      <span className='block mt-4 text-white'>JOOYEON</span>
+      <span className='block mt-4 text-xl text-white'>JOOYEON</span>
       <button className='contact_btn' onClick={onClickHandle}>
-        Contacts
+        CONTACTS
       </button>
     </div>
   );

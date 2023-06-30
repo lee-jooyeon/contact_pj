@@ -6,7 +6,7 @@ export default function ContactItem({ list }) {
 
   return (
     <li
-      className='relative flex py-4 mx-4 text-white cursor-pointer'
+      className='relative flex py-4 text-white cursor-pointer'
       onClick={() => navigate(`/contacts/${id}`, { state: { list } })}
     >
       <span className='text-black bg-[#eeeeee] inline-block w-[4.5rem] h-[4.5rem] text-center leading-[4.5rem] rounded-full text-sm'>

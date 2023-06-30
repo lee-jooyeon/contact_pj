@@ -1,11 +1,11 @@
+import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './App.css';
-import Contact from './components/pages/Contact';
-import Detail from './components/pages/Detail';
-import ErrorPage from './components/pages/ErrorPage';
-import Home from './components/pages/Home';
-import NewContact from './components/pages/NewContact';
-import Root from './components/pages/Root';
+import Contact from './pages/Contact';
+import Detail from './pages/Detail';
+import ErrorPage from './pages/ErrorPage';
+import Home from './pages/Home';
+import NewContact from './pages/NewContact';
+import Root from './pages/Root';
 
 const router = createBrowserRouter([
   {
