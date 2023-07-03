@@ -3,6 +3,7 @@ import { uploadImage } from '../api/upload';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import useContact from '../hooks/useContact';
+import useAddContact from '../hooks/mutations/useAddContact';
 
 export default function NewContact() {
   const publicUrl = process.env.PUBLIC_URL;
@@ -11,7 +12,8 @@ export default function NewContact() {
   const [file, setFile] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState();
-  const { addNewContact } = useContact();
+  // const { addNewContact } = useContact();
+  const addContact = useAddContact();
 
   const onChangeHandler = e => {
     const { name, value, files } = e.target;
@@ -21,7 +23,7 @@ export default function NewContact() {
     }
     setContact(contact => ({
       ...contact,
-      [name]: value,  
+      [name]: value,
     }));
   };
 
@@ -30,7 +32,7 @@ export default function NewContact() {
     setIsUploading(true);
     uploadImage(file)
       .then(url => {
-        addNewContact.mutate({contact, url}, {
+        addContact({contact, url}, {
           onSuccess: () => {
             setSuccess('Added new contact!');
             setTimeout(() => {
@@ -52,7 +54,7 @@ export default function NewContact() {
     <>
       <Header
         headerLeft
-        handleLeftButton={() => navigate(-1)} 
+        handleLeftButton={() => navigate(-1)}
       />
       <section className='mt-5'>
         {success && <p className='fixed mx-auto inset-x-0 top-8 z-50 w-[18.75rem] rounded-2xl bg-[#3f3f52] p-3 opacity-80 text-white'>✅ {success}</p>}
