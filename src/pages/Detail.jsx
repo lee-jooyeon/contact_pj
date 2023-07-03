@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { uploadImage } from '../api/upload';
 import useContact from '../hooks/useContact';
+import { updateList } from '../api/firebase';
 
 export default function Detail() {
   const publicUrl = process.env.PUBLIC_URL;
@@ -20,7 +21,7 @@ export default function Detail() {
     imgUrl,
   });
   const [success, setSuccess] = useState();
-  const { usePostContact, removeContact } = useContact();
+  const { updateContact, removeContact } = useContact();
 
   const onChangeText = e => {
     const { name, value, files } = e.target;
@@ -36,15 +37,31 @@ export default function Detail() {
     }
   };
 
+  // const onSubmitText = e => {
+  //   e.preventDefault();
+  //   try {
+  //     if (file) {
+  //       uploadImage(file).then(url => {
+  //         updateList(id, url);
+  //       });
+  //     } else {
+  //       updateList(id, newText);
+  //     }
+  //     setEdit(!edit);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const onSubmitText = e => {
     e.preventDefault();
     try {
       if (file) {
         uploadImage(file).then(url => {
-          usePostContact.mutate({ id, newText, url});
+          updateContact.mutate({ id, newText, url});
         });
       } else {
-        usePostContact.mutate({ id, newText}, {
+        updateContact.mutate({ id, newText}, {
           onSuccess: () => {
             setSuccess('Updated a contact!');
             setTimeout(() => {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { uploadImage } from '../api/upload';
 import { useNavigate } from 'react-router-dom';
-import useContact from '../hooks/useContact';
 import Header from '../components/Header';
+import useContact from '../hooks/useContact';
 
 export default function NewContact() {
   const publicUrl = process.env.PUBLIC_URL;
@@ -11,7 +11,7 @@ export default function NewContact() {
   const [file, setFile] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState();
-  const { addContact } = useContact();
+  const { addNewContact } = useContact();
 
   const onChangeHandler = e => {
     const { name, value, files } = e.target;
@@ -21,7 +21,7 @@ export default function NewContact() {
     }
     setContact(contact => ({
       ...contact,
-      [name]: value,
+      [name]: value,  
     }));
   };
 
@@ -30,20 +30,19 @@ export default function NewContact() {
     setIsUploading(true);
     uploadImage(file)
       .then(url => {
-        addContact.mutate(
-          {contact, url},
-          {
-            onSuccess: () => {
-              setSuccess('Added new contact!');
-              setTimeout(() => {
-                setSuccess(null);
-              }, 900);
-            } 
+        addNewContact.mutate({contact, url}, {
+          onSuccess: () => {
+            setSuccess('Added new contact!');
+            setTimeout(() => {
+              setSuccess(null);
+            }, 900);
           }
-        );
+        });
         setTimeout(() => {
           navigate('/contacts');
         }, 1000);
+        console.log(uploadImage);
+        console.log(contact)
       })
       .then(() => setIsUploading(false))
       .catch(error => console.log(error));
