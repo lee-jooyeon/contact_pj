@@ -27,26 +27,24 @@ export async function getLists() {
   });
 }
 
-export async function addLists(list, imgUrl) {
+export async function addLists(formData, imgUrl) {
   const id = uuidv4();
   set(ref(database, `lists/${id}`), {
-    ...list,
+    ...formData,
     id,
-    group: list.group,
-    name: list.name,
-    number: list.number,
+    group: formData.group,
+    name: formData.name,
+    number: formData.number,
     imgUrl,
   });
 }
 
-export async function updateList(id, list, imgUrl) {
+export async function updateList(id, formData, imgUrl) {
   update(ref(database, `lists/${id}`), {
-    ...list,
+    ...formData,
     id,
-    group: list.group,
-    name: list.name,
-    number: list.number,
-    imgUrl: imgUrl || list.imgUrl,
+    formData,
+    imgUrl: imgUrl || formData.imgUrl,
   });
 }
 
