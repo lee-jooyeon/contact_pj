@@ -2,39 +2,37 @@ import { useState } from 'react';
 import { uploadImage } from '../api/upload';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import useContact from '../hooks/useContact';
 import useAddContact from '../hooks/mutations/useAddContact';
 
-export default function NewContact() {
+export default function NewuserData() {
   const publicUrl = process.env.PUBLIC_URL;
   const navigate = useNavigate();
-  const [contact, setContact] = useState({});
+  const [userData, setUserData] = useState({});
   const [file, setFile] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState();
-  // const { addNewContact } = useContact();
-  const addContact = useAddContact();
+  const { mutate: addContact } = useAddContact();
 
-  const onChangeHandler = e => {
+  const onChangeHandler = (e) => {
     const { name, value, files } = e.target;
     if (name === 'file') {
       setFile(files && files[0]);
       return;
     }
-    setContact(contact => ({
-      ...contact,
+    setUserData((userData) => ({
+      ...userData,
       [name]: value,
     }));
   };
 
-  const onSubmitHandler = e => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
     setIsUploading(true);
     uploadImage(file)
-      .then(url => {
-        addContact({contact, url}, {
+      .then((url) => {
+        addContact({ userData, url }, {
           onSuccess: () => {
-            setSuccess('Added new contact!');
+            setSuccess('Added new userData!');
             setTimeout(() => {
               setSuccess(null);
             }, 900);
@@ -44,10 +42,10 @@ export default function NewContact() {
           navigate('/contacts');
         }, 1000);
         console.log(uploadImage);
-        console.log(contact)
+        console.log(userData);
       })
       .then(() => setIsUploading(false))
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -67,7 +65,7 @@ export default function NewContact() {
         ) : (
           <img
             src={`${publicUrl}/images/lists/user.png`}
-            alt='contact-img'
+            alt='userData-img'
             className='mx-auto w-32 h-32 object-cover rounded-full'
           />
         )}
@@ -78,7 +76,7 @@ export default function NewContact() {
             className='input_box'
             name='group'
             required
-            value={contact.group ?? ''}
+            value={userData.group ?? ''}
             onChange={onChangeHandler}
           />
           <input
@@ -87,7 +85,7 @@ export default function NewContact() {
             className='input_box'
             name='name'
             required
-            value={contact.name ?? ''}
+            value={userData.name ?? ''}
             onChange={onChangeHandler}
           />
           <input
@@ -96,7 +94,7 @@ export default function NewContact() {
             className='input_box'
             name='number'
             required
-            value={contact.number ?? ''}
+            value={userData.number ?? ''}
             onChange={onChangeHandler}
           />
           <input
