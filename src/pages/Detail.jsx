@@ -2,93 +2,87 @@ import { useState } from 'react';
 import Header from '../components/Header';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { uploadImage } from '../api/upload';
-import useContact from '../hooks/useContact';
-import { updateList } from '../api/firebase';
+import useDeleteContact from '../hooks/mutations/useDeleteContact';
+import useUpdateContact from '../hooks/mutations/useUpdateContact';
 
 export default function Detail() {
   const publicUrl = process.env.PUBLIC_URL;
   const navigate = useNavigate();
-  const {state: {
+  const {
+    state: {
       list: { id, group, name, number, imgUrl },
     },
   } = useLocation();
   const [file, setFile] = useState();
   const [edit, setEdit] = useState(false);
-  const [newText, setNewText] = useState({
+  const [newUserData, setNewUserData] = useState({
     group,
     name,
     number,
     imgUrl,
   });
   const [success, setSuccess] = useState();
-  const { updateContact, removeContact } = useContact();
+  const { mutate: updateContact } = useUpdateContact();
+  const { mutate: removeContact } = useDeleteContact();
 
-  const onChangeText = e => {
+  const onChangeText = (e) => {
     const { name, value, files } = e.target;
     if (name === 'file') {
       setFile(files && files[0]);
       return;
     }
     if (edit) {
-      setNewText({
-        ...newText,
+      setNewUserData({
+        ...newUserData,
         [name]: value,
       });
     }
   };
 
-  // const onSubmitText = e => {
-  //   e.preventDefault();
-  //   try {
-  //     if (file) {
-  //       uploadImage(file).then(url => {
-  //         updateList(id, url);
-  //       });
-  //     } else {
-  //       updateList(id, newText);
-  //     }
-  //     setEdit(!edit);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  const onSubmitText = e => {
+  const onSubmitText = (e) => {
     e.preventDefault();
     try {
       if (file) {
-        uploadImage(file).then(url => {
-          updateContact.mutate({ id, newText, url});
+        uploadImage(file).then((url) => {
+          updateContact({ id, newUserData, url }, {
+            onSuccess: () => {
+              setSuccess('Updated a contact!');
+              setTimeout(() => {
+                setSuccess(null);
+              }, 900);
+            }
+          });
         });
       } else {
-        updateContact.mutate({ id, newText}, {
+        updateContact({ id, newUserData }, {
           onSuccess: () => {
             setSuccess('Updated a contact!');
             setTimeout(() => {
               setSuccess(null);
             }, 900);
-          } 
+          }
         });
       }
       setEdit(!edit);
+      navigate('/contacts');
     } catch (error) {
       console.log(error);
     }
   };
 
   const onEditSubmit = () => {
-    setEdit(prev => !prev);
+    setEdit((prev) => !prev);
   };
 
   const onDeleteHandler = () => {
     if (window.confirm('Do you really want to delete it?')) {
-      removeContact.mutate(id, {
+      removeContact(id, {
         onSuccess: () => {
           setSuccess('Deleted!');
           setTimeout(() => {
             setSuccess(null);
           }, 900);
-        } 
+        }
       });
       setTimeout(() => {
         navigate('/contacts');
@@ -99,9 +93,9 @@ export default function Detail() {
   return (
     <>
       <Header
-        headerLeft 
-        headerRight 
-        handleLeftButton={() => navigate(-1)} 
+        headerLeft
+        headerRight
+        handleLeftButton={() => navigate(-1)}
         handleRightButton={() => navigate('/newcontact')}
       />
       <section>
@@ -130,7 +124,7 @@ export default function Detail() {
               className='input_box'
               name='group'
               placeholder='family, friends or work'
-              value={newText.group ?? ''}
+              value={newUserData.group ?? ''}
               onChange={onChangeText}
             />
             <input
@@ -138,7 +132,7 @@ export default function Detail() {
               placeholder='name'
               className='input_box'
               name='name'
-              value={newText.name ?? ''}
+              value={newUserData.name ?? ''}
               onChange={onChangeText}
             />
             <input
@@ -146,7 +140,7 @@ export default function Detail() {
               placeholder='number'
               className='input_box'
               name='number'
-              value={newText.number ?? ''}
+              value={newUserData.number ?? ''}
               onChange={onChangeText}
             />
             <input
@@ -179,18 +173,18 @@ export default function Detail() {
               )}
             </div>
             <div className='mb-10 text-white text-center text-xl'>
-              {newText.name}
+              {newUserData.name}
               <span
                 className={`${
                   group === 'family'
                     ? 'bg-[#59d58a]'
                     : group === 'friends'
-                    ? 'bg-[#65a0d7]'
-                    : 'bg-[#d587dd]'
-                }
+                      ? 'bg-[#65a0d7]'
+                      : 'bg-[#d587dd]'
+                  }
                 ml-3 px-2 inline-block text-[10px] text-white uppercase leading-4 rounded-full`}
               >
-                {newText.group}
+                {newUserData.group}
               </span>
             </div>
             <div className='flex justify-around text-center mb-12 text-white'>
@@ -221,7 +215,7 @@ export default function Detail() {
             </div>
             <div className='py-5 px-3 mx-3 mb-2 text-white bg-[#3f3f52] rounded-lg'>
               Number
-              <span className='pl-6'>{newText.number}</span>
+              <span className='pl-6'>{newUserData.number}</span>
             </div>
           </div>
         )}
