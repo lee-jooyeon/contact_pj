@@ -5,14 +5,13 @@ import { addLists } from "../../api/firebase";
 const useAddContact = () => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(({contact, url}) => addLists(contact, url),
+  return useMutation(({userData, url}) => addLists(userData, url),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['useGetContact'])
       },
     },
   )
-  return mutate;
 }
 
 export default useAddContact;
