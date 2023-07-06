@@ -98,10 +98,10 @@ export default function Detail() {
         handleLeftButton={() => navigate(-1)}
         handleRightButton={() => navigate('/newcontact')}
       />
-      <section>
+      <section className='mx-3'>
         {success && <p className='fixed mx-auto inset-x-0 top-8 z-50 w-[18.75rem] rounded-2xl bg-[#3f3f52] p-3 opacity-80 text-white'>✅ {success}</p>}
         {edit ? (
-          <form className='flex flex-col mt-7 mx-3'>
+          <form className='flex flex-col mt-7'>
             {file && file ? (
               <div className='text-center mb-10'>
                 <img
@@ -222,7 +222,7 @@ export default function Detail() {
         {edit ? (
           <button
             onClick={onSubmitText}
-            className='py-5 px-3 mx-3 mb-2 w-[360px] bg-[#3f3f52] rounded-lg text-[#278deb]'
+            className='py-5 px-3 mb-2 w-full bg-[#3f3f52] rounded-lg text-[#278deb]'
           >
             Update!
           </button>
