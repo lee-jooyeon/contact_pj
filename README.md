@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# Phone book 전화번호부 앱 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 폴더 구조 📁
 
-## Available Scripts
+### apis
 
-In the project directory, you can run:
+Api 요청과 관련된 함수입니다.
 
-### `yarn start`
+    .
+    ├── apis
+    │   ├── firebase.js
+    │   ├── upload.js
+    └── ...
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### components
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+필요한 컴포넌트와 페이지 단위로 분리하여 관리합니다.
 
-### `yarn test`
+    .
+    ├── ...
+    ├── components
+    │   ├── Header
+    │   ├── ContactItem
+    ├── pages
+    │   ├── Contact
+    │   ├── Detail
+    │   ├── NewContact
+    │   ├── ...
+    └── ...
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### hooks
 
-### `yarn build`
+useQuery, useMutation으로 사용하여 개별 hook을 작성합니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+      .
+    ├── ...
+    ├── hooks
+    │ ├── queries
+    │ ├── mutations
+    │ ├── useAddContact.js
+    │ ├── useDeleteContact.js
+    │ ├── useUpdateContact.js
+    │ └── ...
+    └── ...
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 기술스택 🛠
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Language :** [Javascript](https://developer.mozilla.org/ko/docs/Web/JavaScript)
+- **Package Manager :** [yarn](https://yarnpkg.com/)
+- **State Management :** [React Query](https://react-query.tanstack.com/)
+- **Styling :** [TailwindCSS](https://tailwindcss.com/)
+- **Formatter :** [ESLint](https://eslint.org/)
+- **Library :** [axios](https://axios-http.com/)
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 개발과 함께 공부👩‍💻
+[🗝️ 카카오 소셜 로그인](https://www.notion.so/834e6a787dc942bebc9db7d67dff49fa?pvs=4)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+[🛠️ react-query 뜯어보기](https://www.notion.so/React-Query-e515ea84ebcb4678a8667fed073548ef?pvs=4)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
