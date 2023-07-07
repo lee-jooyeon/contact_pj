@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Header from '../components/Header';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { uploadImage } from '../api/upload';
+import { uploadImage } from '../apis/upload';
 import useDeleteContact from '../hooks/mutations/useDeleteContact';
 import useUpdateContact from '../hooks/mutations/useUpdateContact';
 
@@ -49,6 +49,7 @@ export default function Detail() {
               setSuccess('Updated a contact!');
               setTimeout(() => {
                 setSuccess(null);
+                navigate('/contacts');
               }, 900);
             }
           });
@@ -59,12 +60,12 @@ export default function Detail() {
             setSuccess('Updated a contact!');
             setTimeout(() => {
               setSuccess(null);
-            }, 900);
+              navigate('/contacts');
+            }, 1000);
           }
         });
       }
       setEdit(!edit);
-      navigate('/contacts');
     } catch (error) {
       console.log(error);
     }
