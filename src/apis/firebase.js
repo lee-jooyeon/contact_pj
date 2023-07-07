@@ -1,23 +1,43 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get, set, remove, update } from 'firebase/database';
-
+import { getAuth, signInWithPopup, signOut, onAuthStateChanged, GoogleAuthProvider } from 'firebase/auth';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDERID,
-  appId: process.env.REACT_APP_APPID,
-  measurementId: process.env.REACT_APP_MEASUREMENTID,
   databaseURL: process.env.REACT_APP_DATABASEURL,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
 
+// auth
+export async function login(){
+  return signInWithPopup(auth, provider)
+  .then((result) => {
+    const user = result.user;
+    return user; 
+  })
+  .catch(console.error);
+}
+
+export async function logout(){
+  return signOut(auth)
+  .catch(console.error);
+}
+
+export function onUserStateChange(callback){
+  onAuthStateChanged(auth, (user) => {
+    callback(user);
+  });
+}
+
+// contact API
 export async function getLists() {
   return get(ref(database, 'lists')).then(snapshot => {
     if (snapshot.exists()) {
