@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteList } from "../../api/firebase";
+import { deleteList } from "../../apis/firebase";
 
 const useDeleteContact = () => {
   const queryClient = useQueryClient();

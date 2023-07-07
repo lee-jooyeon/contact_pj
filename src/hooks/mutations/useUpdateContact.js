@@ -1,4 +1,4 @@
-import { updateList } from '../../api/firebase';
+import { updateList } from '../../apis/firebase';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useUpdateContact = () => {

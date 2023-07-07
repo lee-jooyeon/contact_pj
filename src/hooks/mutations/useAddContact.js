@@ -1,6 +1,6 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addLists } from "../../api/firebase";
+import { addLists } from "../../apis/firebase";
 
 const useAddContact = () => {
   const queryClient = useQueryClient();
