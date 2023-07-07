@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { uploadImage } from '../api/upload';
+import { uploadImage } from '../apis/upload';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import useAddContact from '../hooks/mutations/useAddContact';
@@ -28,6 +28,10 @@ export default function NewuserData() {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     setIsUploading(true);
+    if(!file) {
+      alert('Add a image!');
+      return;
+    }
     uploadImage(file)
       .then((url) => {
         addContact({ userData, url }, {
@@ -41,8 +45,6 @@ export default function NewuserData() {
         setTimeout(() => {
           navigate('/contacts');
         }, 1000);
-        console.log(uploadImage);
-        console.log(userData);
       })
       .then(() => setIsUploading(false))
       .catch((error) => console.log(error));
