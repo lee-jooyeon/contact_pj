@@ -1,11 +1,12 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Root from './pages/Root';
 import Contact from './pages/Contact';
 import Detail from './pages/Detail';
 import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
 import NewContact from './pages/NewContact';
-import Root from './pages/Root';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -20,15 +21,27 @@ const router = createBrowserRouter([
       },
       {
         path: '/contacts',
-        element: <Contact />,
+        element: (
+          <ProtectedRoute>
+            <Contact />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/contacts/:contactId',
-        element: <Detail />,
+        element: (
+          <ProtectedRoute>
+            <Detail />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/newcontact',
-        element: <NewContact />,
+        element: (
+          <ProtectedRoute>
+            <NewContact />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
